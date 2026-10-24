@@ -55,5 +55,7 @@ En la carpeta [`docs/GUIA_DEFENSA.md`](file:///c:/Users/Papollo/Desktop/Adivina%
 ---
 
 ## 👥 Equipo AstraCode
-* **Integrantes:** Equipo de Programación Web
+* **Integrantes:**
+  * Pablo Andrés Amaya Tenorio - 00096325
+  * Elías Fernando Rivera Martínez - 00137525
 * **Materia:** Programación Web (Ciclo 02, 2026)

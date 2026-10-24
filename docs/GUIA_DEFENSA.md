@@ -2,6 +2,9 @@
 ## Proyecto: "Adivina el Número" (Integración Frontend - Backend)
 **Asignatura:** Programación Web — Ciclo 02, 2026  
 **Equipo:** AstraCode  
+**Integrantes:**
+* Pablo Andrés Amaya Tenorio - 00096325
+* Elías Fernando Rivera Martínez - 00137525  
 **Evaluación:** Evaluación II (20% de la nota final)  
 
 ---
@@ -42,9 +45,9 @@ El sistema implementa una arquitectura desacoplada **Cliente - Servidor** basada
 
 Se siguió la metodología de ramificación **GitFlow**:
 * **`main`**: Rama de producción que almacena versiones estables.
-* **`develop`**: Rama base de integración donde convergen las características.
-* **`feature/backend`**: Rama de desarrollo para el servidor Express y sus endpoints.
-* **`feature/frontend`**: Rama de desarrollo para la interfaz en React y consumo de la API.
+* **`develop`**: Rama base de integración donde converge todo el proyecto.
+* **`feature/backend`**: Rama de desarrollo para el servidor Express y sus endpoints (fusionada e integrada en develop).
+* **`feature/frontend`**: Rama de desarrollo para la interfaz en React y consumo de la API (fusionada e integrada en develop).
 
 ```text
 Adivina el Número - AstraCode/
@@ -62,7 +65,7 @@ Adivina el Número - AstraCode/
 ├── docs/
 │   └── GUIA_DEFENSA.md     # Este documento de estudio y preparación
 ├── .gitignore              # Ignora node_modules, logs y compilados
-└── README.md               # Instrucciones de inicio rápido
+└── README.md               # Portada e instrucciones de inicio rápido
 ```
 
 ---
@@ -109,7 +112,7 @@ const generarNumeroAleatorio = () => Math.floor(Math.random() * 100) + 1;
 El archivo central es `frontend/src/App.jsx`. A continuación se detallan los elementos de evaluación solicitados por la guía:
 
 ### A. Uso de `useState` (Gestión del Estado)
-En React, la vista reacciona a los cambios en el estado. Se definieron 6 estados bien diferenciados:
+En React, la vista reacciona a los cambios en el estado. Se definieron los estados necesarios:
 1. `const [numeroIngresado, setNumeroIngresado] = useState('')`: Controla el valor en tiempo real del input numérico (formulario controlado).
 2. `const [mensajeServidor, setMensajeServidor] = useState(...)`: Almacena el mensaje devuelto por el servidor para mostrárselo al usuario.
 3. `const [tipoResultado, setTipoResultado] = useState('inicio')`: Guarda el tipo de resultado (`'inicio'`, `'mayor'`, `'menor'`, `'correcto'`, `'error'`) para cambiar dinámicamente colores de alerta e íconos.
@@ -117,14 +120,20 @@ En React, la vista reacciona a los cambios en el estado. Se definieron 6 estados
 5. `const [historialIntentos, setHistorialIntentos] = useState([])`: Arreglo que almacena los objetos de cada intento realizado en la sesión.
 6. `const [cargando, setCargando] = useState(false)`: Estado booleano para deshabilitar botones y mostrar un spinner de carga mientras se espera la respuesta del backend.
 
-### B. Uso de `useEffect` (Efecto Secundario de Montaje)
+### B. Uso de `useEffect` (Efecto Secundario Reactivo)
 ```javascript
 useEffect(() => {
-  verificarEstadoServidor();
-}, []);
+  if (haGanado) {
+    document.title = '🎉 ¡Ganaste! | Adivina el Número';
+  } else if (historialIntentos.length > 0) {
+    document.title = `(${historialIntentos.length} intentos) Adivina el Número`;
+  } else {
+    document.title = '🎯 Adivina el Número | AstraCode';
+  }
+}, [haGanado, historialIntentos.length]);
 ```
-* **¿Qué hace?** Se ejecuta **una única vez** al cargarse el componente en el navegador gracias al arreglo de dependencias vacío `[]`.
-* **Propósito:** Hace un ping a la ruta base de Express (`GET /`) para avisar visualmente en la cabecera si el servidor está conectado o apagado.
+* **¿Qué hace?** Se sincroniza con el ciclo de vida del componente y reacciona cuando cambian `haGanado` o `historialIntentos.length`.
+* **Propósito:** Actualiza dinámicamente el título de la pestaña del navegador para reflejar el estado actual de la partida, cumpliendo con el requisito técnico obligatorio de la guía sobre el uso de `useEffect`.
 
 ### C. Prevención de Recarga en Formularios (`evento.preventDefault()`)
 Los formularios HTML por defecto realizan una petición `GET`/`POST` que recarga toda la página. En una Single Page Application (SPA) con React, se usa `evento.preventDefault()` para cancelar esa recarga y manejar la petición de forma asíncrona mediante JavaScript.
@@ -201,9 +210,9 @@ try {
 
 ---
 
-### P6: ¿Para qué sirve el segundo parámetro `[]` en `useEffect`?
+### P6: ¿Para qué sirve el arreglo de dependencias `[haGanado, historialIntentos.length]` en `useEffect`?
 > **Respuesta ideal:**  
-> *"Es el arreglo de dependencias. Si pasamos un arreglo vacío `[]`, le indicamos a React que el efecto secundario solo debe ejecutarse una vez, exactamente cuando el componente se monta por primera vez en el DOM (equivalente al antiguo `componentDidMount`). Si no pusiéramos el arreglo, se ejecutaría en cada renderizado, provocando peticiones continuas e innecesarias al backend."*
+> *"Es el arreglo de dependencias que le indica a React cuándo debe volver a ejecutar el efecto secundario. Al incluir `[haGanado, historialIntentos.length]`, React reacciona cada vez que el usuario hace un nuevo intento o gana la partida, actualizando el título de la pestaña del navegador dinámicamente. Si pasáramos `[]`, solo se ejecutaría al montar el componente una vez, y si no pasáramos ningún arreglo, se ejecutaría en cada renderizado innecesariamente."*
 
 ---
 

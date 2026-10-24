@@ -39,37 +39,22 @@ function App() {
   // 6. Estado de carga durante las peticiones asíncronas al backend
   const [cargando, setCargando] = useState(false);
 
-  // 7. Estado para verificar la conectividad con el servidor backend
-  const [servidorConectado, setServidorConectado] = useState(null);
-
   /**
    * ==========================================================================
-   * EFECTO INICIAL (useEffect)
+   * EFECTO (useEffect) - REQUISITO TÉCNICO OBLIGATORIO
    * ==========================================================================
-   * Se ejecuta una sola vez cuando el componente se monta en pantalla.
-   * Verifica si el servidor Express está activo consultando la ruta base GET /
+   * Actualiza dinámicamente el título de la pestaña del navegador según el
+   * estado del juego y la cantidad de intentos realizados.
    */
   useEffect(() => {
-    verificarEstadoServidor();
-  }, []);
-
-  /**
-   * Función para comprobar la salud del servidor backend.
-   * Utiliza la API nativa fetch() con sintaxis async/await basada en Promesas.
-   */
-  const verificarEstadoServidor = async () => {
-    try {
-      const respuesta = await fetch(`${API_URL}/`);
-      if (respuesta.ok) {
-        setServidorConectado(true);
-      } else {
-        setServidorConectado(false);
-      }
-    } catch (error) {
-      console.error('Error al conectar con el backend:', error);
-      setServidorConectado(false);
+    if (haGanado) {
+      document.title = '🎉 ¡Ganaste! | Adivina el Número';
+    } else if (historialIntentos.length > 0) {
+      document.title = `(${historialIntentos.length} intentos) Adivina el Número`;
+    } else {
+      document.title = '🎯 Adivina el Número | AstraCode';
     }
-  };
+  }, [haGanado, historialIntentos.length]);
 
   /**
    * Dispara una animación de confeti en toda la pantalla cuando el usuario gana.
@@ -128,7 +113,7 @@ function App() {
       setMensajeServidor(datos.mensaje);
       setTipoResultado(datos.resultado);
 
-      // Creamos un nuevo objeto para el historial
+      // Creamos un nuevo registro para el historial
       const nuevoRegistro = {
         id: Date.now(),
         numero: valorNumerico,
@@ -229,28 +214,8 @@ function App() {
 
   return (
     <div className="container py-4 flex-grow-1 d-flex flex-column justify-content-center">
-      {/* CABECERA / ESTADO DE CONEXIÓN */}
+      {/* CABECERA PRINCIPAL */}
       <header className="text-center mb-4">
-        <div className="d-inline-flex align-items-center gap-2 mb-2 px-3 py-1 rounded-pill bg-dark bg-opacity-50 border border-secondary">
-          <span
-            className={`d-inline-block rounded-circle ${
-              servidorConectado === true
-                ? 'bg-success'
-                : servidorConectado === false
-                ? 'bg-danger'
-                : 'bg-warning'
-            }`}
-            style={{ width: '10px', height: '10px' }}
-          ></span>
-          <small className="text-light">
-            Backend:{' '}
-            {servidorConectado === true
-              ? 'Conectado (localhost:3000)'
-              : servidorConectado === false
-              ? 'Desconectado'
-              : 'Verificando...'}
-          </small>
-        </div>
         <h1 className="fw-bold display-5 text-white mb-2">🎯 Adivina el Número</h1>
         <p className="text-light opacity-75 lead mb-0">
           El servidor ha pensado un número entre <strong>1 y 100</strong>. ¿Podrás adivinarlo?

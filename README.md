@@ -14,7 +14,7 @@ Este proyecto implementa el **Ejercicio 1: "Adivina el Número"** propuesto en l
 ## 🛠️ Tecnologías Utilizadas
 * **Backend:** Node.js, Express, CORS, JavaScript Moderno (ES Modules).
 * **Frontend:** React 18, Vite, Bootstrap 5, CSS personalizado, Canvas-Confetti.
-* **Control de Versiones:** Git & GitHub siguiendo la metodología **GitFlow** (`main`, `develop`, `feature/backend`, `feature/frontend`).
+* **Control de Versiones:** Git & GitHub siguiendo la metodología **GitFlow** (`main`, `develop`).
 
 ---
 
@@ -43,14 +43,6 @@ npm install
 npm run dev
 ```
 > La interfaz quedará disponible en `http://localhost:5173`.
-
----
-
-## 📖 Documentación y Preparación para la Defensa
-En la carpeta [`docs/GUIA_DEFENSA.md`](file:///c:/Users/Papollo/Desktop/Adivina%20el%20N%C3%BAmero%20-%20AstraCode/docs/GUIA_DEFENSA.md) encontrarás la guía completa de estudio que incluye:
-* Explicación línea por línea de la lógica de negocio y arquitectura.
-* Justificación técnica de cada hook (`useState`, `useEffect`) y middleware (`cors`, `express.json`).
-* **Simulador de preguntas y respuestas frecuentes** formuladas por los docentes durante la defensa oral (individual y grupal).
 
 ---
 

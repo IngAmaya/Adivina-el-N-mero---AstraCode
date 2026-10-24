@@ -393,7 +393,7 @@ function App() {
 
       {/* PIE DE PÁGINA */}
       <footer className="text-center text-light opacity-50 small mt-4">
-        Evaluación II - Programación Web • Equipo AstraCode • React + Node.js Express
+        Equipo AstraCode • Programación Web
       </footer>
     </div>
   );
